@@ -41,12 +41,13 @@ class Shanghai_Help_Scraper:
     def __df(self, total_page):
         rows = []
         while self.__curr_page <= total_page:
-            xhtml = self.__scraper_content().decode('utf-8')
+            xhtml = self.__scraper_content().decode('utf-8', errors='ignore')
             p = HTMLTableParser()
             p.feed(xhtml)
             title = ['编号', '时间', '程度', '分类', '摘要', '地址', '详情']
             for i in range(1, len(p.tables[0])):
                 rows.append(p.tables[0][i])
+            print(str(self.__curr_page) + "pages scraped!")
             self.__curr_page += 1
         df = pd.DataFrame(columns = title, data = rows)
         return df
@@ -54,14 +55,14 @@ class Shanghai_Help_Scraper:
     # Function call, users need to provide total_page
     def get(self, total_page):
         df = self.__df(total_page)
-        df.to_csv('shanghai_test.csv', encoding = 'gbk')
+        df.to_csv('shanghai.csv', encoding = 'gbk', errors='ignore')
 
     def pages_scraped(self):
         return self.__curr_page - 1
 
 if __name__ == "__main__":
     test = Shanghai_Help_Scraper()
-    test.get(5)
-    print("Congratulations, you scraped " + str(test.pages_scraped()) + "pages!!")
+    test.get(251)
+    print("Congratulations, you scraped " + str(test.pages_scraped()) + " pages!!")
 
         
