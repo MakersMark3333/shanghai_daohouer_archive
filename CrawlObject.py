@@ -62,6 +62,6 @@ class Shanghai_Help_Scraper:
 if __name__ == "__main__":
     test = Shanghai_Help_Scraper()
     test.get(5)
-    print("Congratulations, you scraped " + str(test.pages_scraped() + "pages!!"))
+    print("Congratulations, you scraped " + str(test.pages_scraped()) + "pages!!")
 
         
