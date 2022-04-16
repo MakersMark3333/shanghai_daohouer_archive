@@ -14,7 +14,7 @@ from html_table_parser.parser import HTMLTableParser
 # pandas dataframe
 import pandas as pd
 
-import csv
+import csv, os
 
 class Shanghai_Help_Scraper:
 
@@ -38,14 +38,18 @@ class Shanghai_Help_Scraper:
         return f.read()
     
     # Constructing the dataframe
-    def __df(self, total_page):
+    def __df(self, total_page, upto=-1):
+        n = 99999 # i most certainly hope we never reach this number.
         rows = []
-        while self.__curr_page <= total_page:
+        while self.__curr_page <= total_page and n > upto:
             xhtml = self.__scraper_content().decode('utf-8', errors='ignore')
             p = HTMLTableParser()
             p.feed(xhtml)
             title = ['编号', '时间', '程度', '分类', '摘要', '地址', '详情']
             for i in range(1, len(p.tables[0])):
+                n = int(p.tables[0][i][0])
+                if n <= upto:
+                    break
                 rows.append(p.tables[0][i])
             print(str(self.__curr_page) + "pages scraped!")
             self.__curr_page += 1
@@ -53,9 +57,24 @@ class Shanghai_Help_Scraper:
         return df
     
     # Function call, users need to provide total_page
-    def get(self, total_page):
-        df = self.__df(total_page)
-        df.to_csv('shanghai.csv', encoding = 'gbk', errors='ignore')
+    # all=False: only adds new entries on the top; in this case total_page is maximum
+    def get(self, total_page, all=False):
+        if not all:
+            with open("shanghai.csv", "rb") as f:
+                f.readline() # discarded
+                l = f.readline()
+                n = int(l.decode("gbk").split(",")[1])
+                df = self.__df(total_page, n)
+                df.to_csv('shanghai_new.csv', encoding = 'gbk', errors='ignore')
+                with open ("shanghai_new.csv", "ab") as g:
+                    while l:
+                        g.write(l)
+                        l = f.readline()
+            os.remove("shanghai.csv")
+            os.rename("shanghai_new.csv", "shanghai.csv")
+        else:
+            df = self.__df(total_page)
+            df.to_csv('shanghai.csv', encoding = 'gbk', errors='ignore')
 
     def pages_scraped(self):
         return self.__curr_page - 1
@@ -64,5 +83,3 @@ if __name__ == "__main__":
     test = Shanghai_Help_Scraper()
     test.get(251)
     print("Congratulations, you scraped " + str(test.pages_scraped()) + " pages!!")
-
-        
