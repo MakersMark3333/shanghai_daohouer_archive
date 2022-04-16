@@ -23,7 +23,7 @@
 
 
 
-[Power BI 可视化面板，每天自动从Github repo拉取三次刷新数据](https://shcovid.vercel.app), Contributed by Anonymous
+[Power BI 可视化面板，每天自动从Github repo拉取三次刷新数据](https://shcovid.vercel.app), *匿名*制作并授权添加
 
 
 ---
@@ -45,4 +45,4 @@ The following content is from daohouer.com:
 > We are normal people who follow the government's call to stay at home. We see and hear people's needs around us. We do what we can to help. We don't ask for reward. We only hope that Shanghai can get better soon.
 
 
-[Power BI dashboard, data is auto pulled from github repo 3 times a day](https://shcovid.vercel.app)
+[Power BI dashboard, data is auto pulled from github repo 3 times a day](https://shcovid.vercel.app), Contributed and authorized usage by *Anonymous*
