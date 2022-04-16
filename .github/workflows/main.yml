@@ -2,7 +2,7 @@ name: instances-updater
 
 on:
   schedule:
-    - cron: '10 2 * * *'
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 jobs:
